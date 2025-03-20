@@ -5,7 +5,6 @@ import CurvedPlane from "@/components/CurvedPlane"
 import { AccumulativeShadows, CameraControls, Center, Environment, RandomizedLight, useVideoTexture } from "@react-three/drei"
 import { Suspense, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { div } from 'three/tsl'
 import Link from 'next/link'
 
 const { DEG2RAD } = THREE.MathUtils
@@ -24,28 +23,13 @@ const films = {
 
 
 function Scene() {
-  const [stream, setStream] = useState(new MediaStream())
-
   const [url, setUrl] = useState(films['McDonalds2'])
 
-  const ref = useRef()
+  const ref = useRef(null)
   useFrame((state, delta) => (ref.current.rotation.y -= delta/4))
-
-  // const { url } = useControls({
-  //   url: {
-  //     value: films['Sintel'],
-  //     options: films
-  //   },
-  //   'getDisplayMedia (only new-window)': button(async (get) => {
-  //     const mediaStream = await navigator.mediaDevices.getDisplayMedia({ video: true })
-  //     setStream(mediaStream)
-  //   })
-  // })
 
   return (
     <>
-      {/* <Center top><Suzi rotation={[-0.63, 0, 0]} /></Center> */}
-
     <group ref={ref}>
       <group rotation-y={DEG2RAD * 0}>
         <Screen src={url} />
@@ -56,7 +40,6 @@ function Scene() {
       </group>
 
       <group rotation-y={DEG2RAD * 180}>
-        {/* <Screen src={stream} /> */}
         <Screen src={url} />
       </group>
 
@@ -97,9 +80,12 @@ function VideoMaterial({ src, setVideo }) {
   texture.repeat.x = -1
   texture.offset.x = 1
 
-  // setVideo?.(texture.image)
-
-  return <meshStandardMaterial side={THREE.DoubleSide} map={texture} toneMapped={false} transparent opacity={0.9} />
+  return <meshStandardMaterial 
+  side={THREE.DoubleSide} 
+  map={texture} 
+  toneMapped={false} 
+  transparent opacity={0.9} 
+  />
 }
 
 
@@ -114,7 +100,6 @@ const VideoRoom = () => {
       <div className='row-start-2'>
       <Canvas shadows camera={{ position: [4, 3, 12], fov: 30 }}>
         <Scene />
-    {/* <Ground /> */}
         <AccumulativeShadows frames={100} color="#9d4b4b" colorBlend={0.5} alphaTest={0.9} scale={20}>
         <RandomizedLight amount={8} radius={4} position={[5, 5, -10]} />
         </AccumulativeShadows>
