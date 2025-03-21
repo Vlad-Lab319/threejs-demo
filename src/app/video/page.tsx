@@ -23,7 +23,7 @@ const films = {
 
 
 function Scene() {
-  const [url, setUrl] = useState(films['McDonalds2'])
+  const [url, setUrl] = useState(films['McDonalds'])
 
   const ref = useRef(null)
   useFrame((state, delta) => (ref.current.rotation.y -= delta/4))
